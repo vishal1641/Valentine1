@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Message by Vishal.</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      min-height: 100dvh;
+      perspective: 1000px;
+      font: 1em/1.4 "Poppins", sans-serif;
+      overflow: hidden;
+      color: hsl(180 68% 5%);
+      background-image: radial-gradient(circle farthest-corner at 50% 50%,
+          hsl(187 20% 88%) 30%,
+          hsl(149 20% 94%) 100%);
+    }
+
+    .book {
+      position: relative;
+      display: flex;
+      margin: auto;
+      width: 42cqmin;
+      /* Increased width */
+      pointer-events: none;
+      transform-style: preserve-3d;
+      transition: translate 1s;
+      translate: calc(min(var(--c), 1) * 50%) 0%;
+      rotate: 1 0 0 30deg;
+    }
+
+    .page {
+      --thickness: 4;
+      flex: none;
+      display: flex;
+      width: 100%;
+      font-size: 2.2cqmin;
+      /* Slightly increased font size */
+      pointer-events: all;
+      user-select: none;
+      transform-style: preserve-3d;
+      transform-origin: left center;
+      transition: transform 1s,
+        rotate 1s ease-in calc((min(var(--i), var(--c)) - max(var(--i), var(--c))) * 50ms);
+      translate: calc(var(--i) * -100%) 0px 0px;
+      transform: translateZ(calc((var(--c) - var(--i) - 0.5) * calc(var(--thickness) * 0.23cqmin)));
+      rotate: 0 1 0 calc(clamp(0, var(--c) - var(--i), 1) * -180deg);
+    }
+
+    .front,
+    .back {
+      position: relative;
+      flex: none;
+      width: 100%;
+      backface-visibility: hidden;
+      overflow: hidden;
+      background-color: #fff;
+      translate: 0px;
+    }
+
+    .back {
+      translate: -100% 0;
+      rotate: 0 1 0 180deg;
+    }
+
+    .book {
+      counter-reset: page -1;
+    }
+
+    .book a {
+      color: inherit;
+    }
+
+    .page {
+      box-shadow: 0em 0.5em 1em -0.2em #00000020;
+    }
+
+    .front,
+    .back {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: space-between;
+      padding: 2em;
+      border: 1px solid #0002;
+    }
+
+    .front:has(img),
+    .back:has(img) {
+      padding: 0;
+    }
+
+    .front img,
+    .back img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .front::after,
+    .back::after {
+      position: absolute;
+      bottom: 1em;
+      counter-increment: page;
+      content: counter(page) ".";
+      font-size: 0.8em;
+    }
+
+    .cover::after {
+      content: "";
+    }
+
+    .front::after {
+      right: 1em;
+    }
+
+    .front {
+      background: linear-gradient(to left, #f7f7f7 80%, #eee 100%);
+      border-radius: 0.1em 0.5em 0.5em 0.1em;
+    }
+
+    .back::after {
+      left: 1em;
+    }
+
+    .back {
+      background-image: linear-gradient(to right, #f7f7f7 80%, #eee 100%);
+      border-radius: 0.5em 0.1em 0.1em 0.5em;
+    }
+
+    .cover {
+      background: radial-gradient(circle farthest-corner at 80% 20%,
+          hsl(150 80% 20% / 0.3) 0%,
+          hsl(170 60% 10% / 0.1) 100%),
+        hsl(231, 32%, 29%) url("./cover.jpg") 50% / cover;
+      color: hsl(0, 100%, 30%);
+      /* Dark red text color for cover page */
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin-bottom: 1px;
+      color: hsl(0, 100%, 30%);
+      /* Dark red heading color */
+    }
+
+    p {
+      margin-top: 1px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+      color: hsl(0, 100%, 30%);
+      /* Dark red text color for paragraphs */
+    }
+
+    .front,
+    .back {
+      padding: 1.5em;
+      color: hsl(0, 100%, 30%);
+      /* Dark red text color for front and back pages */
+    }
+
+    .book {
+      width: 40cqmin;
+      /* Slightly increased width */
+    }
+
+    .page {
+      font-size: 2cqmin;
+      /* Slightly increased font size */
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    .front,
+    .back {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 1.5em;
+    }
+
+    h2 {
+      margin-bottom: 5px;
+    }
+
+    p {
+      margin-top: 5px;
+      line-height: 1.4;
+    }
+
+
+    body {
+      margin: 0;
+      display: flex;
+      min-height: 100dvh;
+      perspective: 1000px;
+      font: 1em/1.4 "Poppins", sans-serif;
+      overflow: hidden;
+      color: hsl(180 68% 5%);
+      background: linear-gradient(to right, #ff7eb9, #ff65a3, #ff165d);
+      background-size: 400% 400%;
+      animation: gradientAnimation 10s ease infinite;
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Emoji Animation */
+    .emoji {
+      position: absolute;
+      font-size: 3rem;
+      opacity: 0;
+      animation: floatEmojis 6s ease-in-out infinite;
+    }
+
+    @keyframes floatEmojis {
+      0% {
+        transform: translateY(100px);
+        opacity: 1;
+      }
+
+      50% {
+        transform: translateY(-100px) rotate(20deg);
+        opacity: 0.7;
+      }
+
+      100% {
+        transform: translateY(100px);
+        opacity: 1;
+      }
+    }
+
+    /* Add random timing for each emoji */
+    .emoji:nth-child(1) {
+      animation-delay: 0s;
+      left: 10%;
+    }
+
+    .emoji:nth-child(2) {
+      animation-delay: 1s;
+      left: 20%;
+    }
+
+    .emoji:nth-child(3) {
+      animation-delay: 2s;
+      left: 30%;
+    }
+
+    .emoji:nth-child(4) {
+      animation-delay: 3s;
+      left: 40%;
+    }
+
+    .emoji:nth-child(5) {
+      animation-delay: 4s;
+      left: 50%;
+    }
+
+    .emoji:nth-child(6) {
+      animation-delay: 5s;
+      left: 60%;
+    }
+
+    .emoji:nth-child(7) {
+      animation-delay: 6s;
+      left: 70%;
+    }
+
+    .emoji:nth-child(8) {
+      animation-delay: 7s;
+      left: 80%;
+    }
+
+    .emoji:nth-child(9) {
+      animation-delay: 8s;
+      left: 90%;
+    }
+
+    .music-btn {
+      margin-top: 30px;
+      padding: 12px 25px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #ff6b81;
+      color: #fff;
+      height: 35px;
+      border-radius: 100%;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s;
+      z-index: 5;
+    }
+
+    .music-btn:hover {
+      background: #ff4757;
+    }
+  </style>
+</head>
+
+<body>
+
+  
+ 
+  
+  <div class="book">
+    <div class="page">
+      <div class="front cover">
+        <h1 style="
+              color: rgb(255, 255, 255);
+              text-shadow: 5px 2px 5px rgb(0, 0, 0);
+            ">
+          A Message for You🤍
+        </h1>
+
+        <p style="
+              color: rgb(255, 255, 255);
+              text-shadow: 5px 2px 5px rgb(0, 0, 0);
+            ">
+          from<br />VISHAL
+        </p>
+      </div>
+      <div class="back">
+        <h2>A Special Beginning ❤️✨</h2>
+
+        <p>Some people come into our lives unexpectedly, yet leave a lasting impact. You are one of those rare souls.
+
+          I exactly remeber the day of our very first conversation.
+
+          This isn’t just a collection of words; it’s a small way of showing how much you mean to me. A way to remind
+          you that you are truly special.
+
+          So, here’s to us—our conversations, our connection, and the beautiful moments yet to come. 💖</p>
+
+        <!-- <p>
+          Play Video Before Start Reading... <br />Since we connect in
+          Instagram on January 8th, 2021, ....
+        </p> -->
+      </div>
+    </div>
+    <!--2nd page-->
+    <div class="page">
+      <div class="front">
+        <h2>From Strangers to Something Special ❤️✨</h2>
+        <p>
+          It’s incredible to think how, just a few days ago, I didn’t even know you. Meeting you through insta was
+          a moment of fate that I’ll always be grateful for.
+
+          At first, I wasn’t sure how we’d connect, what we’d talk about, or what kind of person you’d be. But now,
+          after spending time with you, I’ve realized something truly special—
+
+          You’re absolutely amazing. 💖
+
+          tumhara college ka waahiyaat kahani jisme mereko koi interest nhi rehta phir bhi daily sunne ka mann krta hai,
+          tumhara daant dikha kar hasna these things have already made a place in my heart. I never
+          expected to meet someone like you, but now, I can’t imagine not having you in my life.
+
+          Maybe it was destiny, or maybe it was just luck—but whatever it was, I’m glad it brought me to you. 💕
+        </p>
+      </div>
+      <div class="back">
+        <img src="./1.jpg" alt="Img 1" />
+      </div>
+    </div>
+    <!--3rd page-->
+    <div class="page">
+      <div class="front">
+        <h2>The Magic of You ✨💖</h2>
+        <p>
+          There’s a charm in your pyara saa face,
+          and this is no buttering, trust me.
+
+          Your big, beautiful eyes,
+          your smile,
+          that side sweep of your hair—
+          Every little thing about you feels so perfect, so mesmerizing.
+          I often find myself wondering—
+
+          Isn’t this 5-foot girl a little too beautiful?
+
+          That cute little tummy of yours,
+          when it shows just a bit,
+          it makes me smile every time.
+          And the feeling of cuddling you—
+          that’s the best feeling, hands down.
+
+          Smelling your scent, playing with your hair—
+          these little moments,
+          I think about them every single day. ✨💖
+        </p>
+      </div>
+      <div class="back">
+        <h2>Sabse Important Message!!</h2>
+        <p>
+          Itni sundar to hai bas thoda daily padh liya karo izzat se samjhi aur jo bahar ka daily khaati hai n ek din
+          haathi ban jayegi to chor do khana samjhi n.Jitna der daily insta pe bhakchodi krti hai uska 10 percent padh
+          lo to kya se kya hojaye pr nahi last momemt k liye chorna hai tumko aur baad me royegi.
+          🌟
+        </p>
+      </div>
+    </div>
+    <!--4th page-->
+    <div class="page">
+      <div class="front">
+        <h2>The Best Part of My Day🤞💖</h2>
+        <p>
+          Talking to you has quickly become
+          one of the best parts of my day.
+          No matter how the day goes—good, bad, or exhausting—
+          our conversations have a way of making everything feel lighter and brighter.
+
+          Tumko motki bolkar chidhana,
+          chutiya kehkar mazak udana,
+          tumhara roz ka bakar bakar sunna,
+          tumhe roast karna aur beta beta bolna
+          ye sab cheezein
+          I can’t explain how much I enjoy it all.
+
+          These little moments, these silly conversations—
+          they mean more to me than words can ever express.
+
+          💖✨
+        </p>
+      </div>
+      <div class="back">
+        <img src="./2.jpg" alt="Img 1" />
+      </div>
+    </div>
+    <!--5th page-->
+    <div class="page">
+      <div class="front">
+        <h1>A Wish from the Heart 💫💖</h1>
+        <p>
+          I often find myself wishing…
+          that I could meet you every single day—
+          to see your smile, hear your laugh, and just be around you.
+
+          But koi baat nahi...
+          this long-distance connection has its own charm too.
+          The late-night calls, the random conversations,
+          the way we share the tiniest details of our day—
+          it all feels so special, so ours.
+
+          Even though we haven't known each other for very long,
+          you've already become someone unforgettable to me.
+
+          I hope you won’t forget me either—
+          because these moments we share, these conversations we have—
+          they mean more to me than words can ever express.
+
+          Distance might keep us apart physically,
+          but in my heart, you’re right here, always. 💙✨
+        </p>
+      </div>
+      <div class="back">
+        <h1>Always Here for You 💖✨</h1>
+        <p>
+          I want you to know…
+          I’ll always be here for you—no matter what.
+
+          If you ever need someone to listen,
+          someone to support you,
+          or simply someone to make you smile—
+          I’m just a message away.
+
+          My time is yours, whenever you need it.
+
+          Life can be unpredictable, but I hope you never feel alone.
+          On the good days, I’ll celebrate with you.
+          On the tough ones, I’ll stand by you—
+          cheering you on, reminding you just how amazing you are.
+
+          You deserve nothing but pure happiness,
+          and if I can be even a small part of that,
+          I’d be truly honored.
+
+          No matter where life takes us,
+          just remember—
+          you’ll always have someone who cares…
+          someone who truly feels for you. 💖✨
+
+
+        </p>
+      </div>
+    </div>
+    <!--6th page-->
+    <div class="page">
+      <div class="front">
+        <h2>My Addiction ✨💖</h2>
+        <p>
+          You are my addiction—
+          the kind I genuinely love being hooked on.
+
+          Late-night video calls… falling asleep while still connected…
+          it all makes me feel like you're right beside me.
+
+          I'm so addicted to you that I spend my entire day
+          just waiting for the night—
+          to see you, to hear you, to feel close to you.
+
+          Sometimes, when you fall asleep,
+          I just sit there, watching you,
+          thinking to myself, "Wow, she's so beautiful."
+
+          This habit of listening to your endless bakar-bakar—
+          it’s become a part of me now.
+
+          And just like how some stains are beautiful,
+          this addiction is one I never want to let go of. 💖✨
+        </p>
+      </div>
+      <div class="back">
+        <h2>Absolutely Breathtaking ✨💖</h2>
+        <p>
+          In everything you wear, you are nothing short of breathtaking. It’s not just about your looks—it’s the grace
+          that makes you truly mesmerizing.
+
+
+
+          The way you move, the way you
+          smile—it’s all part of your undeniable charm.
+
+          You don’t just turn heads; you leave lasting impressions. There’s something so effortlessly captivating about
+          you that makes it impossible to look away.
+
+          💕✨
+        </p>
+      </div>
+    </div>
+    <!--7th page-->
+    <div class="page">
+      <div class="front">
+        <h2>Grateful for You🌹❤</h2>
+        <p>
+          I just wanted to take a moment to let you know
+          how much I appreciate you—
+          Haan, bhale hi mera roast karne wali aadat se
+          ye baat fake lage… but it’s genuine.
+
+          Meeting you, even for a short time, has been a gift.
+          I’m truly grateful that our paths crossed.
+          No matter what the future holds,
+          I’ll always be thankful for you.
+
+          Some people leave a mark on our hearts
+          without even trying—
+          and you are one of them. 💖
+        </p>
+      </div>
+      <div class="back">
+        <h2>Will You Be Mine? ❤️✨</h2>
+        <p>From the moment we started talking,
+          you've been on my mind in the best way possible.
+          Your beauty, your energy—
+          everything about you feels so special to me.
+
+          You turn my tiring days into something brighter,
+          and make my heart a little fuller.
+
+          I don’t know what the future holds,
+          but I do know one thing—
+          I’d love to have you by my side.
+
+          So, here’s my question, straight from the heart… 💛
+
+
+
+          Will you be mine? 💖💕 </p>
+      </div>
+    </div>
+
+    <div class="page">
+      <div class="front">
+        <img src="./4.png" alt="Img 1" />
+      </div>
+      <div class="back cover">
+        <h3>Cutest Queen</h3>
+        <!-- <p>
+          Content:By SHOBHIT DEV<br /><a href="" target="_blank" rel="nofollow"></a>
+
+          <br />
+        </p> -->
+      </div>
+    </div>
+  </div>
+
+
+  <div class="emoji">❤️‍🔥</div>
+  <div class="emoji">🫶🏻</div>
+  <div class="emoji">❤️</div>
+  <div class="emoji">😘</div>
+  <div class="emoji">👨‍❤️‍💋‍👨</div>
+  <div class="emoji">💓</div>
+  <div class="emoji">❣️</div>
+  <div class="emoji">💘</div>
+  <div class="emoji">💖</div>
+  <div class="emoji">💙</div>
+  <div class="emoji">💚</div>
+  <div class="emoji">🥰</div>
+  <div class="emoji">💗</div>
+
+  <script>
+    const flipBook = (elBook) => {
+      elBook.style.setProperty("--c", 0); // Set current page
+      elBook.querySelectorAll(".page").forEach((page, idx) => {
+        page.style.setProperty("--i", idx);
+        page.addEventListener("click", (evt) => {
+          if (evt.target.closest("a")) return;
+          const curr = evt.target.closest(".back") ? idx : idx + 1;
+          elBook.style.setProperty("--c", curr);
+        });
+      });
+    };
+
+    document.querySelectorAll(".book").forEach(flipBook);
+
+  </script>
+
+</body>
+
+</html>
